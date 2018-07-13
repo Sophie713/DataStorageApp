@@ -1,7 +1,6 @@
 package com.example.acer.datastorageapp;
 
 import android.content.ContentValues;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,15 +9,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.example.acer.datastorageapp.data.ProductContract;
 import com.example.acer.datastorageapp.utils.ProductsDatabaseHelper;
 
-class EditorActivity extends AppCompatActivity {
+class AddActivity extends AppCompatActivity {
 
     private EditText product;
     private EditText price;
@@ -32,7 +29,7 @@ class EditorActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_editor);
+        setContentView(R.layout.activity_add);
         //find my views
         product = findViewById(R.id.editor_product_name);
         price = findViewById(R.id.editor_price);
@@ -46,6 +43,7 @@ class EditorActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 checkAndInsert();
+                onBackPressed();
             }
         });
         //set up the spinner
