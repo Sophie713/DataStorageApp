@@ -1,17 +1,14 @@
 package com.example.acer.datastorageapp.utils;
 
 import android.content.Context;
-
-import com.example.acer.datastorageapp.MainActivity;
-import com.example.acer.datastorageapp.data.ProductContract;
-import com.example.acer.datastorageapp.data.ProductObject;
-
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import java.sql.Connection;
+import com.example.acer.datastorageapp.data.ProductContract;
+import com.example.acer.datastorageapp.data.ProductObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,29 +38,19 @@ public class ProductsDatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS " + ProductContract.ProductEntry.TABLE_NAME);
+        onCreate(db);
 
     }
 
     public List<ProductObject> productList() {
-        //myVariables;
-        /** int _id;
-         String product_name;
-         int price;
-         int quantity;
-         int supplier_id;
-         String supplier_number;
-         String supplier;*/
+
         List<ProductObject> list = new ArrayList<>();
 
         ProductsDatabaseHelper mDbHelper = new ProductsDatabaseHelper(context);
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
         try {
             Cursor cursor = db.rawQuery(SELECT_ALL, null);
-            /** int remainingRows = cursor.getCount();
-             for(int i = 1; i<=remainingRows; i++){
-             String id = String.valueOf(i);
-             db.rawQuery(SELECT_ALL + " WHERE _ID = " + id, null).toString();
-             }*/
             if (cursor.moveToFirst()) {
                 do {
                     int id = cursor.getInt(cursor.getColumnIndex(ProductContract.ProductEntry._ID));

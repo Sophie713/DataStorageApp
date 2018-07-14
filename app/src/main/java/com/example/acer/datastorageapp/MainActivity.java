@@ -3,9 +3,9 @@ package com.example.acer.datastorageapp;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -50,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
             RecyclerView myListView = findViewById(R.id.main_activity_recyclerView);
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
 
+            //TODO: create function for the sold button
+
             myListView.setLayoutManager(layoutManager);
             myListView.setAdapter(adapter);
         } else {
@@ -69,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         Cursor cursor = db.rawQuery("SELECT * FROM " + ProductContract.ProductEntry.TABLE_NAME, null);
         try {
             TextView displayView = (TextView) findViewById(R.id.test);
-            displayView.setText("Number of rows in pets database table: " + cursor.getCount());
+            displayView.setText("Number of rows: " + cursor.getCount());
         } finally {
             cursor.close();
         }

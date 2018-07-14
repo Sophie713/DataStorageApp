@@ -115,6 +115,7 @@ public class EditActivity extends AppCompatActivity {
         values.put(ProductContract.ProductEntry.SUPPLIER_PHONE, supplier_number.getText().toString());
         //insert
         SQLiteDatabase db = helper.getWritableDatabase();
+        //TODO: create a function to edit values
 
     }
 
