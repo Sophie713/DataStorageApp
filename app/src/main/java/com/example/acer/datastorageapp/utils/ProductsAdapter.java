@@ -33,20 +33,30 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.itemView.setTag(newsList.get(position));
         final ProductObject view = newsList.get(position);
+        final String product_name = view.getProduct_name();
+        final String price = String.valueOf(view.getPrice());
+        final String quantity = String.valueOf(view.getQuantity());
+        final String supplier = view.getSupplier();
+        final String supplier_number = view.getSupplier_number();
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), EditActivity.class);
+                intent.putExtra("product_name", product_name);
+                intent.putExtra("price", price);
+                intent.putExtra("quantity", quantity);
+                intent.putExtra("supplier", supplier);
+                intent.putExtra("supplier_number", supplier_number);
                 v.getContext().startActivity(intent);
             }
         });
 
-        holder.product.setText(view.getProduct_name());
-        holder.price.setText(String.valueOf(view.getPrice()));
-        holder.quantity.setText(String.valueOf(view.getQuantity()));
-        holder.supplier.setText(view.getSupplier());
-        holder.supplier_number.setText(view.getSupplier_number());
+        holder.product.setText(product_name);
+        holder.price.setText(price);
+        holder.quantity.setText(quantity);
+        holder.supplier.setText(supplier);
+        holder.supplier_number.setText(supplier_number);
 
     }
 
