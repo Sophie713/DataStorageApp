@@ -15,7 +15,7 @@ import android.widget.Spinner;
 import com.example.acer.datastorageapp.data.ProductContract;
 import com.example.acer.datastorageapp.utils.ProductsDatabaseHelper;
 
-class AddActivity extends AppCompatActivity {
+public class AddActivity extends AppCompatActivity {
 
     private EditText product;
     private EditText price;

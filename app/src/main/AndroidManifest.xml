@@ -18,6 +18,10 @@
         </activity>
         <activity android:name=".AddActivity"/>
         <activity android:name=".EditActivity"/>
+        <provider
+            android:name=".data.ProductsProvider"
+            android:authorities="com.example.acer.datastorageapp"
+            android:exported="false"/>
     </application>
 
 </manifest>
