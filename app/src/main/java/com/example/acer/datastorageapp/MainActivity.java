@@ -2,7 +2,6 @@ package com.example.acer.datastorageapp;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -19,10 +18,20 @@ import com.example.acer.datastorageapp.utils.ProductsDatabaseHelper;
 
 import java.util.List;
 
+import static com.example.acer.datastorageapp.data.ProductContract.ProductEntry.CONTENT_URI;
+
 public class MainActivity extends AppCompatActivity {
 
     List<ProductObject> productList;
     FloatingActionButton fab;
+    String[] projection = {
+            ProductContract.ProductEntry._ID,
+            ProductContract.ProductEntry.PRODUCT_NAME,
+            ProductContract.ProductEntry.PRICE,
+            ProductContract.ProductEntry.QUANTITY,
+            ProductContract.ProductEntry.SUPPLIER_NAME,
+            ProductContract.ProductEntry.SUPPLIER_PHONE
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,9 +75,8 @@ public class MainActivity extends AppCompatActivity {
         ProductsDatabaseHelper productsDatabaseHelper = new ProductsDatabaseHelper(this);
         ProductsDatabaseHelper mDbHelper = new ProductsDatabaseHelper(this);
         productList = productsDatabaseHelper.productList();
-        // Create and/or open a database to read from it
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + ProductContract.ProductEntry.TABLE_NAME, null);
+
+        Cursor cursor = getContentResolver().query(CONTENT_URI, projection, null, null, null);
         try {
             TextView displayView = (TextView) findViewById(R.id.test);
             displayView.setText("Number of rows: " + cursor.getCount());

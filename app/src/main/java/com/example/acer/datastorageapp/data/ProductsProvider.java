@@ -1,12 +1,15 @@
 package com.example.acer.datastorageapp.data;
 
 import android.content.ContentProvider;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.example.acer.datastorageapp.utils.ProductsDatabaseHelper;
 
@@ -18,12 +21,12 @@ public class ProductsProvider extends ContentProvider {
     private ProductsDatabaseHelper productsDatabaseHelper;
 
     private static final int PRODUCTS_TABLE = 100;
-    private static final int PRODUCTS_ITEM_ID = 101;
+    private static final int PRODUCT_ID = 101;
     private static final UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
     static {
-        uriMatcher.addURI(CONTENT_AUTHORITY, PATH_PRODUCTS_DATABASE, 100);
-        uriMatcher.addURI(CONTENT_AUTHORITY, PATH_PRODUCTS_DATABASE + "/#", 101);
+        uriMatcher.addURI(CONTENT_AUTHORITY, PATH_PRODUCTS_DATABASE, PRODUCTS_TABLE);
+        uriMatcher.addURI(CONTENT_AUTHORITY, PATH_PRODUCTS_DATABASE + "/#", PRODUCT_ID);
     }
 
     @Override
@@ -35,7 +38,24 @@ public class ProductsProvider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
-        return null;
+        SQLiteDatabase database = productsDatabaseHelper.getReadableDatabase();
+        Cursor cursor;
+        int uri_match = uriMatcher.match(uri);
+        switch (uri_match) {
+            case PRODUCTS_TABLE:
+                cursor = database.query(ProductContract.ProductEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
+                break;
+            case PRODUCT_ID:
+                selection = ProductContract.ProductEntry._ID + "=?";
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
+                cursor = database.query(ProductContract.ProductEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
+                break;
+            default:
+                Log.e("xyz", uri.toString() + " invalid uri");
+                throw new IllegalArgumentException("URI " + uri + " has not been recognized");
+
+        }
+        return cursor;
     }
 
     @Nullable
