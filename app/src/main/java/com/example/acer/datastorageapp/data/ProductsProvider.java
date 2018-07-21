@@ -2,6 +2,7 @@ package com.example.acer.datastorageapp.data;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
+import android.content.UriMatcher;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -9,9 +10,21 @@ import android.support.annotation.Nullable;
 
 import com.example.acer.datastorageapp.utils.ProductsDatabaseHelper;
 
+import static com.example.acer.datastorageapp.data.ProductContract.CONTENT_AUTHORITY;
+import static com.example.acer.datastorageapp.data.ProductContract.PATH_PRODUCTS_DATABASE;
+
 public class ProductsProvider extends ContentProvider {
 
     private ProductsDatabaseHelper productsDatabaseHelper;
+
+    private static final int PRODUCTS_TABLE = 100;
+    private static final int PRODUCTS_ITEM_ID = 101;
+    private static final UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+
+    static {
+        uriMatcher.addURI(CONTENT_AUTHORITY, PATH_PRODUCTS_DATABASE, 100);
+        uriMatcher.addURI(CONTENT_AUTHORITY, PATH_PRODUCTS_DATABASE + "/#", 101);
+    }
 
     @Override
     public boolean onCreate() {

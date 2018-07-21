@@ -60,7 +60,6 @@ public class ProductsDatabaseHelper extends SQLiteOpenHelper {
                     int supplier = cursor.getInt(cursor.getColumnIndex(ProductContract.ProductEntry.SUPPLIER_NAME));
                     String supplier_phone = cursor.getString(cursor.getColumnIndex(ProductContract.ProductEntry.SUPPLIER_PHONE));
                     list.add(id - 1, new ProductObject(product, price, quantity, supplier, supplier_phone));
-                    // do what ever you want here
                 } while (cursor.moveToNext());
             }
             cursor.close();

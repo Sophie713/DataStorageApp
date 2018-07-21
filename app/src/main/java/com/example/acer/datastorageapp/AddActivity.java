@@ -81,15 +81,6 @@ public class AddActivity extends AppCompatActivity {
     }
 
     private void checkAndInsert() {
-        /**String typed_product = "";
-        int typed_price = 0;
-        int typed_quantity = 0;
-        String typed_supplier_number = "";
-        //get input
-        typed_product = product.getText().toString();
-        typed_price = Integer.valueOf(price.getText().toString());
-        typed_quantity = Integer.valueOf(quantity.getText().toString());
-        typed_supplier_number = supplier_number.getText().toString();*/
         ContentValues values = new ContentValues();
         values.put(ProductContract.ProductEntry.PRODUCT_NAME, product.getText().toString());
         values.put(ProductContract.ProductEntry.PRICE, Integer.valueOf(price.getText().toString()));
@@ -102,17 +93,3 @@ public class AddActivity extends AppCompatActivity {
 
     }
 }
-/**
- *         //insert string
- String INSERT = "insert into " + ProductContract.ProductEntry.TABLE_NAME + "(" +
- ProductContract.ProductEntry.PRODUCT_NAME + ", " +
- ProductContract.ProductEntry.PRICE + ", " +
- ProductContract.ProductEntry.QUANTITY + ", " +
- ProductContract.ProductEntry.SUPPLIER_NAME + ", " +
- ProductContract.ProductEntry.SUPPLIER_PHONE + ") VALUES (" +
- typed_product + ", " +
- typed_price + ", " +
- typed_quantity + ", " +
- selected_supplier + ", " +
- typed_supplier_number + ");";
- */

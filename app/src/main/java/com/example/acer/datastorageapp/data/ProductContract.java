@@ -1,12 +1,20 @@
 package com.example.acer.datastorageapp.data;
 
+import android.net.Uri;
 import android.provider.BaseColumns;
 
 public final class ProductContract {
 
     private ProductContract(){}
 
+    public static final String CONTENT_AUTHORITY = "com.example.acer.datastorageapp";
+    public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
+    public static final String PATH_PRODUCTS_DATABASE = "products";
+
     public static final class ProductEntry implements BaseColumns{
+
+        public static final Uri CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_PRODUCTS_DATABASE);
+
         public static final String TABLE_NAME = "products";
         public static final String _ID = BaseColumns._ID;
         public static final String PRODUCT_NAME = "product_name";
