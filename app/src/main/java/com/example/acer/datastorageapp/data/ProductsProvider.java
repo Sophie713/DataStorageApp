@@ -67,7 +67,16 @@ public class ProductsProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
-        return null;
+        SQLiteDatabase database = productsDatabaseHelper.getWritableDatabase();
+        Cursor cursor;
+        int uri_match = uriMatcher.match(uri);
+        switch ((uri_match)) {
+            case PRODUCTS_TABLE:
+                
+            default:
+                Log.e("xyz", uri.toString() + " invalid uri");
+                throw new IllegalArgumentException("URI " + uri + " has not been recognized");
+        }
     }
 
     @Override
