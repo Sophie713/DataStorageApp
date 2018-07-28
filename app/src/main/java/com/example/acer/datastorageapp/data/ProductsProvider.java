@@ -72,7 +72,7 @@ public class ProductsProvider extends ContentProvider {
         int uri_match = uriMatcher.match(uri);
         switch ((uri_match)) {
             case PRODUCTS_TABLE:
-                
+
             default:
                 Log.e("xyz", uri.toString() + " invalid uri");
                 throw new IllegalArgumentException("URI " + uri + " has not been recognized");
