@@ -1,6 +1,11 @@
 package com.example.acer.datastorageapp;
 
+import android.app.Activity;
+import android.app.LoaderManager;
+import android.content.Context;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -20,9 +25,10 @@ import java.util.List;
 
 import static com.example.acer.datastorageapp.data.ProductContract.ProductEntry.CONTENT_URI;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     List<ProductObject> productList;
+    ProductsAdapter productsAdapter;
     FloatingActionButton fab;
     String[] projection = {
             ProductContract.ProductEntry._ID,
@@ -32,11 +38,14 @@ public class MainActivity extends AppCompatActivity {
             ProductContract.ProductEntry.SUPPLIER_NAME,
             ProductContract.ProductEntry.SUPPLIER_PHONE
     };
+    private int loaderID = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        getLoaderManager().initLoader(loaderID, null, this);
 
         fab = (FloatingActionButton) findViewById(R.id.fab_add);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -49,27 +58,6 @@ public class MainActivity extends AppCompatActivity {
 
         displayDatabaseInfo();
     }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (!productList.isEmpty()) {
-            ProductsAdapter adapter = new ProductsAdapter(productList);
-
-            RecyclerView myListView = findViewById(R.id.main_activity_recyclerView);
-            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-
-            //TODO: create function for the sold button
-
-            myListView.setLayoutManager(layoutManager);
-            myListView.setAdapter(adapter);
-        } else {
-            Toast.makeText(this, "wtf", Toast.LENGTH_LONG).show();
-        }
-
-
-
-}
 
     private void displayDatabaseInfo() {
         ProductsDatabaseHelper productsDatabaseHelper = new ProductsDatabaseHelper(this);
@@ -85,4 +73,30 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return new CursorLoader(this,
+                ProductContract.ProductEntry.CONTENT_URI,
+                projection,
+                null, null, null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        if (!productList.isEmpty()) {
+
+        } else {
+            Toast.makeText(this, "wtf", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        productsAdapter.swapCursor(null);
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
 }

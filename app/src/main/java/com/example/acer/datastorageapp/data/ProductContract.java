@@ -1,5 +1,6 @@
 package com.example.acer.datastorageapp.data;
 
+import android.content.ContentResolver;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
@@ -32,5 +33,7 @@ public final class ProductContract {
         public static final int SUPPLIER_FACEBOOK = 3;
         public static final int SUPPLIER_YOUTUBE = 4;
 
+        public static final String CONTENT_LIST_TYPE =  ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_PRODUCTS_DATABASE;;
+        public static final String CONTENT_ITEM_TYPE =  ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_PRODUCTS_DATABASE;;
     }
 }
