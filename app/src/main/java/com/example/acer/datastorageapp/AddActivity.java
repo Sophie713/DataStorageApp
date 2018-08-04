@@ -75,7 +75,7 @@ public class AddActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                selected_supplier = ProductContract.ProductEntry.SUPPLIER_UNKNOWN;
             }
         });
     }

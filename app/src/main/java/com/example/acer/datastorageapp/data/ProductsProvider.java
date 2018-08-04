@@ -56,6 +56,7 @@ public class ProductsProvider extends ContentProvider {
                 throw new IllegalArgumentException();
 
         }
+        cursor.setNotificationUri(getContext().getContentResolver(), uri);
         return cursor;
     }
 
@@ -76,8 +77,6 @@ public class ProductsProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
-        SQLiteDatabase database = productsDatabaseHelper.getWritableDatabase();
-        Cursor cursor;
         int uri_match = uriMatcher.match(uri);
         switch ((uri_match)) {
             case PRODUCTS_TABLE:
@@ -147,11 +146,10 @@ public class ProductsProvider extends ContentProvider {
     }
 
     private int updateProduct(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        if (values.containsKey(ProductContract.ProductEntry.PRODUCT_NAME)) {
             checkProductName(values);
             checkPrice(values);
             checkQuantity(values);
-        }
+
         if (values.size() == 0) {
             return 0;
         }

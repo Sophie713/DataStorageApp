@@ -1,18 +1,18 @@
 package com.example.acer.datastorageapp;
 
-import android.app.Activity;
 import android.app.LoaderManager;
-import android.content.Context;
+import android.content.ContentUris;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +28,7 @@ import static com.example.acer.datastorageapp.data.ProductContract.ProductEntry.
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     List<ProductObject> productList;
+    private static final int loaderID = 0;
     ProductsAdapter productsAdapter;
     FloatingActionButton fab;
     String[] projection = {
@@ -38,16 +39,18 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             ProductContract.ProductEntry.SUPPLIER_NAME,
             ProductContract.ProductEntry.SUPPLIER_PHONE
     };
-    private int loaderID = 0;
+    ListView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        recyclerView = findViewById(R.id.main_activity_recyclerView);
+
         getLoaderManager().initLoader(loaderID, null, this);
 
-        fab = (FloatingActionButton) findViewById(R.id.fab_add);
+        fab = findViewById(R.id.fab_add);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -56,6 +59,20 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
         });
 
+        productsAdapter = new ProductsAdapter(this, null);
+        recyclerView.setAdapter(productsAdapter);
+
+        recyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+
+                Intent intent = new Intent(MainActivity.this, EditActivity.class);
+                Uri currentProductUri = ContentUris.withAppendedId(ProductContract.ProductEntry.CONTENT_URI, id);
+                intent.setData(currentProductUri);
+                startActivity(intent);
+
+            }
+        });
         displayDatabaseInfo();
     }
 
@@ -66,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         Cursor cursor = getContentResolver().query(CONTENT_URI, projection, null, null, null);
         try {
-            TextView displayView = (TextView) findViewById(R.id.test);
+            TextView displayView = findViewById(R.id.test);
             displayView.setText("Number of rows: " + cursor.getCount());
         } finally {
             cursor.close();
@@ -84,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (!productList.isEmpty()) {
+            productsAdapter.swapCursor(data);
 
         } else {
             Toast.makeText(this, "wtf", Toast.LENGTH_LONG).show();
@@ -92,11 +110,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
+        productList.clear();
+        recyclerView.removeAllViews();
+        getLoaderManager().initLoader(loaderID, null, this);
         productsAdapter.swapCursor(null);
-    }
-
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
-
     }
 }
