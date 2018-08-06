@@ -159,18 +159,15 @@ public class EditActivity extends AppCompatActivity {
                         selected_supplier = ProductContract.ProductEntry.SUPPLIER_YOUTUBE;
                         break;
                     default:
-                        selected_supplier = ProductContract.ProductEntry.SUPPLIER_UNKNOWN;
+                        supplier_spinner.setSelection(setUpSpinner(supplier));
                         break;
                 }
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 supplier_spinner.setSelection(setUpSpinner(supplier));
             }
         });
-        //choose corresponding supplier
-        supplier_spinner.setSelection(setUpSpinner(supplier));
     }
 
     private void editAndInsert() {
@@ -187,13 +184,13 @@ public class EditActivity extends AppCompatActivity {
 
     public int setUpSpinner(String supplier) {
         int result = 0;
-        if (supplier == suppliers[1]) {
+        if (supplier.equals(suppliers[1])) {
             result = 1;
-        } else if (supplier == suppliers[2]) {
+        } else if (supplier.equals(suppliers[2])) {
             result = 2;
-        } else if (supplier == suppliers[3]) {
+        } else if (supplier.equals(suppliers[3])) {
             result = 3;
-        } else if (supplier == suppliers[4]) {
+        } else if (supplier.equals(suppliers[4])) {
             result = 4;
         }
         return result;
