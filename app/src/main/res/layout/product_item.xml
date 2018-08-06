@@ -65,6 +65,7 @@
         tools:text="supplier phone" />
 
     <Button
+        android:focusable="false"
         android:id="@+id/rw_item_button"
         style="@style/Base.TextAppearance.AppCompat.Widget.Button.Borderless.Colored"
         android:layout_width="wrap_content"

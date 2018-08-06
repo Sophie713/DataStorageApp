@@ -1,7 +1,10 @@
 package com.example.acer.datastorageapp.utils;
 
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,7 +38,16 @@ public class ProductsAdapter extends CursorAdapter {
     }
 
     @Override
-    public void bindView(View view, Context context, Cursor cursor) {
+    public void bindView(View view, Context context, final Cursor cursor) {
+        //GET ID
+        final int currentId = cursor.getColumnIndex(ProductContract.ProductEntry._ID);
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(v.getContext(), "I work!", Toast.LENGTH_SHORT).show();
+            }
+        });
         TextView product = view.findViewById(R.id.rw_item_product);
         TextView price = view.findViewById(R.id.rw_item_price);
         final TextView quantity = view.findViewById(R.id.rw_item_quantity);
@@ -49,6 +61,10 @@ public class ProductsAdapter extends CursorAdapter {
                 int newQuantity = Integer.valueOf(quantity.getText().toString()) - 1;
                 if (newQuantity >= 0) {
                     //TODO update table
+                    ContentValues values = new ContentValues(currentId);
+                    values.put(ProductContract.ProductEntry.QUANTITY, newQuantity);
+                    Uri myUri = ContentUris.withAppendedId(ProductContract.ProductEntry.CONTENT_URI, currentId);
+                    v.getContext().getContentResolver().update(myUri, values, null, null);
                 } else {
                     Toast.makeText(v.getContext(), "No more items to sell", Toast.LENGTH_SHORT).show();
                 }
@@ -73,9 +89,9 @@ public class ProductsAdapter extends CursorAdapter {
         }
     }
 
-    public String getSupplierName(String id) {
+    public String getSupplierName(String supplierId) {
         String supplier;
-        switch (id) {
+        switch (supplierId) {
             case "1":
                 supplier = "Google";
                 break;
@@ -93,6 +109,7 @@ public class ProductsAdapter extends CursorAdapter {
                 break;
         }
         return supplier;
+
     }
 }
 

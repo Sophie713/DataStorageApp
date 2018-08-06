@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:layout_height="match_parent">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
@@ -13,28 +13,45 @@
 
         <TextView
             android:id="@+id/editing_id_text"
-            android:textSize="26sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="26sp"
             tools:text="Editing item id: 1" />
 
         <EditText
             android:id="@+id/editing_product_name"
             android:layout_width="match_parent"
-            android:inputType="text"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:inputType="text" />
 
         <EditText
             android:id="@+id/editing_price"
             android:layout_width="match_parent"
-            android:inputType="number"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:inputType="number" />
 
-        <EditText
-            android:id="@+id/editing_quantity"
-            android:inputType="number"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/editing_decrease_quantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/editing_quantity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number" />
+
+            <ImageView
+                android:id="@+id/editing_increase_quantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
 
         <Spinner
             android:id="@+id/editing_supplier"
@@ -46,8 +63,13 @@
 
         <EditText
             android:id="@+id/editing_supplier_phone"
-            android:inputType="phone"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="phone" />
+
+        <ImageView
+            android:id="@+id/editing_delete"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
     </LinearLayout>
@@ -56,10 +78,10 @@
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/editing_save"
         android:layout_width="wrap_content"
-        android:src="@android:drawable/ic_menu_save"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
         android:layout_marginEnd="24dp"
+        android:src="@android:drawable/ic_menu_save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
