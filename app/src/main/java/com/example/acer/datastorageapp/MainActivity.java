@@ -1,17 +1,14 @@
 package com.example.acer.datastorageapp;
 
 import android.app.LoaderManager;
-import android.content.ContentUris;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -61,20 +58,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         productsAdapter = new ProductsAdapter(this, null);
         recyclerView.setAdapter(productsAdapter);
-
-        recyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-
-                Intent intent = new Intent(MainActivity.this, EditActivity.class);
-                Uri currentProductUri = ContentUris.withAppendedId(ProductContract.ProductEntry.CONTENT_URI, id);
-                intent.setData(currentProductUri);
-                //getId
-                intent.putExtra("id", id);
-                startActivity(intent);
-
-            }
-        });
         displayDatabaseInfo();
     }
 

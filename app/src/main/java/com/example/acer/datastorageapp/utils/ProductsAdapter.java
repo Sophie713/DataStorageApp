@@ -81,7 +81,7 @@ public class ProductsAdapter extends CursorAdapter {
                     values.put(ProductContract.ProductEntry.QUANTITY, newQuantity);
                     v.getContext().getContentResolver().update(ContentUris.withAppendedId(ProductContract.ProductEntry.CONTENT_URI, id), values, (ProductContract.ProductEntry._ID + "=?"), new String[]{String.valueOf(id)});
                 } else {
-                    Toast.makeText(v.getContext(), "No more items to sell", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(v.getContext(), R.string.nothing_to_sell, Toast.LENGTH_SHORT).show();
                 }
             }
         });

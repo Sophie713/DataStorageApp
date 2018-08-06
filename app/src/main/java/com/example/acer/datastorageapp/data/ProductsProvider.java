@@ -87,7 +87,7 @@ public class ProductsProvider extends ContentProvider {
         }
     }
 
-    private Uri insertProduct(Uri uri, ContentValues values) {
+    public Uri insertProduct(Uri uri, ContentValues values) {
 
         checkProductName(values);
         checkPrice(values);

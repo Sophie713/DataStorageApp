@@ -1,16 +1,17 @@
 package com.example.acer.datastorageapp;
 
 import android.content.ContentValues;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.acer.datastorageapp.data.ProductContract;
 import com.example.acer.datastorageapp.utils.ProductsDatabaseHelper;
@@ -43,7 +44,6 @@ public class AddActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 checkAndInsert();
-                onBackPressed();
             }
         });
         //set up the spinner
@@ -81,15 +81,20 @@ public class AddActivity extends AppCompatActivity {
     }
 
     private void checkAndInsert() {
-        ContentValues values = new ContentValues();
-        values.put(ProductContract.ProductEntry.PRODUCT_NAME, product.getText().toString());
-        values.put(ProductContract.ProductEntry.PRICE, Integer.valueOf(price.getText().toString()));
-        values.put(ProductContract.ProductEntry.QUANTITY, Integer.valueOf(quantity.getText().toString()));
-        values.put(ProductContract.ProductEntry.SUPPLIER_NAME, selected_supplier);
-        values.put(ProductContract.ProductEntry.SUPPLIER_PHONE, supplier_number.getText().toString());
-        //insert
-        SQLiteDatabase db = helper.getWritableDatabase();
-        db.insert(ProductContract.ProductEntry.TABLE_NAME, null, values);
+        try {
+            ContentValues values = new ContentValues();
+            values.put(ProductContract.ProductEntry.PRODUCT_NAME, product.getText().toString());
+            values.put(ProductContract.ProductEntry.PRICE, Integer.valueOf(price.getText().toString()));
+            values.put(ProductContract.ProductEntry.QUANTITY, Integer.valueOf(quantity.getText().toString()));
+            values.put(ProductContract.ProductEntry.SUPPLIER_NAME, selected_supplier);
+            values.put(ProductContract.ProductEntry.SUPPLIER_PHONE, supplier_number.getText().toString());
+            //insert
+            this.getContentResolver().insert(ProductContract.ProductEntry.CONTENT_URI, values);
+            finish();
+        } catch (Exception e) {
+            Toast.makeText(this, "Values are not valid or missing.", Toast.LENGTH_LONG).show();
+            Log.e("xyz", e.toString());
+        }
 
     }
 }

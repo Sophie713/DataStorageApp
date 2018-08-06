@@ -5,4 +5,5 @@
     <string name="quantity">Quantity</string>
     <string name="item_sold">Item sold</string>
     <string name="no_contact">No contact availabale.</string>
+    <string name="nothing_to_sell">No more items to sell</string>
 </resources>
