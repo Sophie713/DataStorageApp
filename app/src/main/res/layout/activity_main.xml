@@ -19,13 +19,13 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ListView
-        android:id="@+id/main_activity_recyclerView"
+        android:id="@+id/main_activity_listView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="8dp"
-        android:paddingBottom="58dp"
         android:clickable="true"
         android:focusable="true"
+        android:paddingBottom="58dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,15 +33,45 @@
 
     </ListView>
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/main_activity_listView">
+
+        <ImageView
+            android:layout_width="185dp"
+            android:layout_height="185dp"
+            android:tint="@color/yellow"
+            app:srcCompat="@android:drawable/btn_star" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="No info to show yet. Add soe data."
+            android:textColor="@color/blackish"
+            android:textSize="40sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_add"
-        android:src="@android:drawable/ic_input_add"
-        android:tint="@android:color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
+        android:src="@android:drawable/ic_input_add"
+        android:tint="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 </android.support.constraint.ConstraintLayout>

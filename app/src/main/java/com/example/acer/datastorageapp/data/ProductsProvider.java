@@ -81,10 +81,12 @@ public class ProductsProvider extends ContentProvider {
         switch ((uri_match)) {
             case PRODUCTS_TABLE:
                 insertProduct(uri, values);
+                break;
             default:
                 Log.e("xyz", uri.toString() + " invalid uri");
                 throw new IllegalArgumentException("URI " + uri + " has not been recognized");
         }
+        return uri;
     }
 
     public Uri insertProduct(Uri uri, ContentValues values) {

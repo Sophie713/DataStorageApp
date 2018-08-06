@@ -36,14 +36,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             ProductContract.ProductEntry.SUPPLIER_NAME,
             ProductContract.ProductEntry.SUPPLIER_PHONE
     };
-    ListView recyclerView;
+    ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        recyclerView = findViewById(R.id.main_activity_recyclerView);
+        listView = findViewById(R.id.main_activity_listView);
 
         getLoaderManager().initLoader(loaderID, null, this);
 
@@ -57,13 +57,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         });
 
         productsAdapter = new ProductsAdapter(this, null);
-        recyclerView.setAdapter(productsAdapter);
+        listView.setAdapter(productsAdapter);
         displayDatabaseInfo();
     }
 
     private void displayDatabaseInfo() {
         ProductsDatabaseHelper productsDatabaseHelper = new ProductsDatabaseHelper(this);
-        ProductsDatabaseHelper mDbHelper = new ProductsDatabaseHelper(this);
         productList = productsDatabaseHelper.productList();
 
         Cursor cursor = getContentResolver().query(CONTENT_URI, projection, null, null, null);
@@ -96,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         productList.clear();
-        recyclerView.removeAllViews();
+        listView.removeAllViews();
         getLoaderManager().initLoader(loaderID, null, this);
         productsAdapter.swapCursor(null);
     }

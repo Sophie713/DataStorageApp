@@ -3,6 +3,7 @@ package com.example.acer.datastorageapp.utils;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.acer.datastorageapp.EditActivity;
 import com.example.acer.datastorageapp.R;
 import com.example.acer.datastorageapp.data.ProductContract;
 import com.example.acer.datastorageapp.data.ProductObject;
@@ -56,11 +58,11 @@ public class ProductsAdapter extends CursorAdapter {
         int supplierPhoneColumnIndex = cursor.getColumnIndex(ProductContract.ProductEntry.SUPPLIER_PHONE);
         //get values
         final int id = cursor.getInt(idColumnIndex);
-        String productName = cursor.getString(productColumnIndex);
-        String price = cursor.getString(priceColumnIndex) + ",-";
+        final String productName = cursor.getString(productColumnIndex);
+        final String price = cursor.getString(priceColumnIndex) + ",-";
         final int quantity = cursor.getInt(quantityColumnIndex);
-        String supplier = getSupplierName(cursor.getString(supplierColumnIndex));
-        String supplier_phone = cursor.getString(supplierPhoneColumnIndex);
+        final String supplier = getSupplierName(cursor.getString(supplierColumnIndex));
+        final String supplier_phone = cursor.getString(supplierPhoneColumnIndex);
         //setup Views
         productTV.setText(productName);
         priceTV.setText(price);
@@ -88,7 +90,14 @@ public class ProductsAdapter extends CursorAdapter {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), "I work!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(v.getContext(), EditActivity.class);
+                intent.putExtra("product_name", productName);
+                intent.putExtra("id", id);
+                intent.putExtra("price", price);
+                intent.putExtra("quantity", String.valueOf(quantity));
+                intent.putExtra("supplier", supplier);
+                intent.putExtra("supplier_number", supplier_phone);
+                v.getContext().startActivity(intent);
             }
         });
     }
@@ -116,90 +125,3 @@ public class ProductsAdapter extends CursorAdapter {
 
     }
 }
-
-
-/**
- * @Override public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
- * holder.itemView.setTag(newsList.get(position));
- * final ProductObject view = newsList.get(position);
- * final String product_name = view.getProduct_name();
- * final String price = String.valueOf(view.getPrice());
- * final String quantity = String.valueOf(view.getQuantity());
- * final String supplier = view.getSupplier();
- * final String supplier_number = view.getSupplier_number();
- * <p>
- * holder.itemView.setOnClickListener(new View.OnClickListener() {
- * @Override public void onClick(View v) {
- * Intent intent = new Intent(v.getContext(), EditActivity.class);
- * intent.putExtra("product_name", product_name);
- * intent.putExtra("price", price);
- * intent.putExtra("quantity", quantity);
- * intent.putExtra("supplier", supplier);
- * intent.putExtra("supplier_number", supplier_number);
- * v.getContext().startActivity(intent);
- * }
- * });
- * <p>
- * holder.product.setText(product_name);
- * holder.price.setText(price);
- * holder.quantity.setText(quantity);
- * holder.supplier.setText(supplier);
- * holder.supplier_number.setText(supplier_number);
- * <p>
- * }
- * @Override public int getItemCount() {
- * return newsList.size();
- * }
- * @Override public View newView(Context context, Cursor cursor, ViewGroup parent) {
- * View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.product_item, parent, false);
- * return view;
- * }
- * @Override public void bindView(View view, Context context, Cursor cursor) {
- * holder.itemView.setTag(newsList.get(position));
- * final ProductObject view = newsList.get(position);
- * final String product_name = view.getProduct_name();
- * final String price = String.valueOf(view.getPrice());
- * final String quantity = String.valueOf(view.getQuantity());
- * final String supplier = view.getSupplier();
- * final String supplier_number = view.getSupplier_number();
- * <p>
- * holder.itemView.setOnClickListener(new View.OnClickListener() {
- * @Override public void onClick(View v) {
- * Intent intent = new Intent(v.getContext(), EditActivity.class);
- * intent.putExtra("product_name", product_name);
- * intent.putExtra("price", price);
- * intent.putExtra("quantity", quantity);
- * intent.putExtra("supplier", supplier);
- * intent.putExtra("supplier_number", supplier_number);
- * v.getContext().startActivity(intent);
- * }
- * });
- * <p>
- * holder.product.setText(product_name);
- * holder.price.setText(price);
- * holder.quantity.setText(quantity);
- * holder.supplier.setText(supplier);
- * holder.supplier_number.setText(supplier_number);
- * <p>
- * }
- * <p>
- * public class ViewHolder extends RecyclerView.ViewHolder {
- * <p>
- * public TextView product;
- * public TextView price;
- * public TextView quantity;
- * public TextView supplier;
- * public TextView supplier_number;
- * <p>
- * public ViewHolder(View itemView) {
- * super(itemView);
- * <p>
- * product = itemView.findViewById(R.id.rw_item_product);
- * price = itemView.findViewById(R.id.rw_item_price);
- * quantity = itemView.findViewById(R.id.rw_item_quantity);
- * supplier = itemView.findViewById(R.id.rw_item_supplier);
- * supplier_number = itemView.findViewById(R.id.rw_item_supplier_phone);
- * }
- * }
- */
-
