@@ -146,9 +146,6 @@ public class ProductsProvider extends ContentProvider {
     }
 
     private int updateProduct(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-            checkProductName(values);
-            checkPrice(values);
-            checkQuantity(values);
 
         if (values.size() == 0) {
             return 0;

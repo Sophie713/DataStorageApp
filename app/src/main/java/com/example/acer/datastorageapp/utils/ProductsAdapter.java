@@ -1,5 +1,7 @@
 package com.example.acer.datastorageapp.utils;
 
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.text.TextUtils;
@@ -36,57 +38,59 @@ public class ProductsAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, final Cursor cursor) {
-        //GET ID
-        final int currentId = cursor.getColumnIndex(ProductContract.ProductEntry._ID);
-
+        //cursor position
+        final int position = cursor.getPosition();
+        //find views
+        TextView productTV = view.findViewById(R.id.rw_item_product);
+        TextView priceTV = view.findViewById(R.id.rw_item_price);
+        TextView quantityTV = view.findViewById(R.id.rw_item_quantity);
+        TextView supplierTV = view.findViewById(R.id.rw_item_supplier);
+        TextView supplier_numberTV = view.findViewById(R.id.rw_item_supplier_phone);
+        Button sellProduct = view.findViewById(R.id.rw_item_button);
+        //get indexes
+        int idColumnIndex = cursor.getColumnIndex(ProductContract.ProductEntry._ID);
+        int productColumnIndex = cursor.getColumnIndex(ProductContract.ProductEntry.PRODUCT_NAME);
+        int priceColumnIndex = cursor.getColumnIndex(ProductContract.ProductEntry.PRICE);
+        int quantityColumnIndex = cursor.getColumnIndex(ProductContract.ProductEntry.QUANTITY);
+        int supplierColumnIndex = cursor.getColumnIndex(ProductContract.ProductEntry.SUPPLIER_NAME);
+        int supplierPhoneColumnIndex = cursor.getColumnIndex(ProductContract.ProductEntry.SUPPLIER_PHONE);
+        //get values
+        final int id = cursor.getInt(idColumnIndex);
+        String productName = cursor.getString(productColumnIndex);
+        String price = cursor.getString(priceColumnIndex) + ",-";
+        final int quantity = cursor.getInt(quantityColumnIndex);
+        String supplier = getSupplierName(cursor.getString(supplierColumnIndex));
+        String supplier_phone = cursor.getString(supplierPhoneColumnIndex);
+        //setup Views
+        productTV.setText(productName);
+        priceTV.setText(price);
+        quantityTV.setText(String.valueOf(quantity));
+        supplierTV.setText(supplier);
+        if (TextUtils.isEmpty(supplier_phone)) {
+            supplier_numberTV.setText(R.string.no_contact);
+        } else {
+            supplier_numberTV.setText(supplier_phone);
+        }
+        //setOnClickListener to decrement quantity
+        sellProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int newQuantity = quantity - 1;
+                if (newQuantity >= 0) {
+                    ContentValues values = new ContentValues();
+                    values.put(ProductContract.ProductEntry.QUANTITY, newQuantity);
+                    v.getContext().getContentResolver().update(ContentUris.withAppendedId(ProductContract.ProductEntry.CONTENT_URI, id), values, (ProductContract.ProductEntry._ID + "=?"), new String[]{String.valueOf(id)});
+                } else {
+                    Toast.makeText(v.getContext(), "No more items to sell", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(v.getContext(), "I work!", Toast.LENGTH_SHORT).show();
             }
         });
-        TextView product = view.findViewById(R.id.rw_item_product);
-        TextView price = view.findViewById(R.id.rw_item_price);
-        final TextView quantity = view.findViewById(R.id.rw_item_quantity);
-        TextView supplier = view.findViewById(R.id.rw_item_supplier);
-        TextView supplier_number = view.findViewById(R.id.rw_item_supplier_phone);
-        Button sellProduct = view.findViewById(R.id.rw_item_button);
-        //setOnClickListener
-        sellProduct.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int id = currentId;
-                int newQuantity = Integer.valueOf(quantity.getText().toString()) - 1;
-                if (newQuantity >= 0) {
-                    //TODO update table
-                    Toast.makeText(v.getContext(), "id: " + id, Toast.LENGTH_SHORT).show();
-
-                    /**ContentValues values = new ContentValues(currentId);
-                    values.put(ProductContract.ProductEntry.QUANTITY, newQuantity);
-                    Uri myUri = ContentUris.withAppendedId(ProductContract.ProductEntry.CONTENT_URI, currentId);
-                     v.getContext().getContentResolver().update(myUri, values, null, null);*/
-                } else {
-                    Toast.makeText(v.getContext(), "No more items to sell", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        int productColumnIndex = cursor.getColumnIndex(ProductContract.ProductEntry.PRODUCT_NAME);
-        int priceColumnIndex = cursor.getColumnIndex(ProductContract.ProductEntry.PRICE);
-        int quantityColumnIndex = cursor.getColumnIndex(ProductContract.ProductEntry.QUANTITY);
-        int supplierColumnIndex = cursor.getColumnIndex(ProductContract.ProductEntry.SUPPLIER_NAME);
-        int supplierPhoneColumnIndex = cursor.getColumnIndex(ProductContract.ProductEntry.SUPPLIER_PHONE);
-
-
-        product.setText(cursor.getString(productColumnIndex));
-        price.setText(cursor.getString(priceColumnIndex) + ",-");
-        quantity.setText(cursor.getString(quantityColumnIndex));
-        supplier.setText(getSupplierName(cursor.getString(supplierColumnIndex)));
-        if (TextUtils.isEmpty(cursor.getString(supplierPhoneColumnIndex))) {
-            supplier_number.setText(R.string.no_contact);
-        } else {
-            supplier_number.setText(cursor.getString(supplierPhoneColumnIndex));
-        }
     }
 
     public String getSupplierName(String supplierId) {
