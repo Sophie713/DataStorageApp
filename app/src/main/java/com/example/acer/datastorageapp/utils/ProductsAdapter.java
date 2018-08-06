@@ -1,10 +1,7 @@
 package com.example.acer.datastorageapp.utils;
 
-import android.content.ContentUris;
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.net.Uri;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,13 +55,16 @@ public class ProductsAdapter extends CursorAdapter {
         sellProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int id = currentId;
                 int newQuantity = Integer.valueOf(quantity.getText().toString()) - 1;
                 if (newQuantity >= 0) {
                     //TODO update table
-                    ContentValues values = new ContentValues(currentId);
+                    Toast.makeText(v.getContext(), "id: " + id, Toast.LENGTH_SHORT).show();
+
+                    /**ContentValues values = new ContentValues(currentId);
                     values.put(ProductContract.ProductEntry.QUANTITY, newQuantity);
                     Uri myUri = ContentUris.withAppendedId(ProductContract.ProductEntry.CONTENT_URI, currentId);
-                    v.getContext().getContentResolver().update(myUri, values, null, null);
+                     v.getContext().getContentResolver().update(myUri, values, null, null);*/
                 } else {
                     Toast.makeText(v.getContext(), "No more items to sell", Toast.LENGTH_SHORT).show();
                 }

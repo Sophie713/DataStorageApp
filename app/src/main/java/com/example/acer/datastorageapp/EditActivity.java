@@ -14,12 +14,14 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.acer.datastorageapp.data.ProductContract;
 import com.example.acer.datastorageapp.utils.ProductsDatabaseHelper;
 
 public class EditActivity extends AppCompatActivity {
 
+    private int id;
     private TextView info;
     private EditText product;
     private EditText price;
@@ -36,26 +38,26 @@ public class EditActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
+        //get views
+        info = findViewById(R.id.editing_id_text);
+        price = findViewById(R.id.editing_price);
+        product = findViewById(R.id.editing_product_name);
+        quantity = findViewById(R.id.editing_quantity);
+        supplier_spinner = findViewById(R.id.editing_supplier);
+        supplier_number = findViewById(R.id.editing_supplier_phone);
 
         try {
             //catch intent
             intent = getIntent();
-            //get views
-            info = findViewById(R.id.editing_id_text);
-
-            product = findViewById(R.id.editing_product_name);
+            //setup views
+            id = intent.getIntExtra("id", -1);
+            if (id == -1) {
+                Toast.makeText(this, "There has been some error.", Toast.LENGTH_SHORT).show();
+                finish();
+            }
             product.setText(intent.getStringExtra("product_name"));
-
-            price = findViewById(R.id.editing_price);
             price.setText(intent.getStringExtra("price"));
-
-            quantity = findViewById(R.id.editing_quantity);
             quantity.setText(intent.getStringExtra("quantity"));
-
-            supplier_spinner = findViewById(R.id.editing_supplier);
-
-
-            supplier_number = findViewById(R.id.editing_supplier_phone);
             supplier_number.setText(intent.getStringExtra("supplier_number"));
 
         } catch (Exception e) {

@@ -69,6 +69,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 Intent intent = new Intent(MainActivity.this, EditActivity.class);
                 Uri currentProductUri = ContentUris.withAppendedId(ProductContract.ProductEntry.CONTENT_URI, id);
                 intent.setData(currentProductUri);
+                //getId
+                intent.putExtra("id", id);
                 startActivity(intent);
 
             }
