@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DataStorageApp</string>
+    <string name="app_name">Product Database</string>
     <string name="supplier_name">Supplier Name</string>
     <string name="supplier_phone_no_spaces">Supplier Phone (no spaces)</string>
     <string name="quantity">Quantity</string>
@@ -7,4 +7,6 @@
     <string name="no_contact">No contact availabale.</string>
     <string name="nothing_to_sell">No more items to sell</string>
     <string name="something_went_wrong">Something went wrong. Try updating manually.</string>
+    <string name="delete_all_data">Delete all Data</string>
+    <string name="sure_want_delete">Are you sure you want to delete all data?</string>
 </resources>

@@ -60,12 +60,26 @@
             android:hint="@string/supplier_name"
             android:spinnerMode="dropdown" />
 
-        <EditText
-            android:id="@+id/editing_supplier_phone"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="phone" />
+            android:orientation="horizontal">
 
+            <EditText
+                android:id="@+id/editing_supplier_phone"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:inputType="phone" />
+
+            <ImageView
+                android:id="@+id/editing_call"
+                android:layout_width="@dimen/dp35"
+                android:layout_height="@dimen/dp35"
+                android:layout_margin="8dp"
+                android:src="@android:drawable/stat_sys_phone_call_forward"
+                android:tint="@color/blackish" />
+        </LinearLayout>
         <ImageView
             android:id="@+id/editing_delete"
             android:layout_width="55dp"

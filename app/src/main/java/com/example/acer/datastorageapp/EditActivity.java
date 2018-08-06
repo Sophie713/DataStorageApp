@@ -1,8 +1,8 @@
 package com.example.acer.datastorageapp;
 
-import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -37,6 +37,7 @@ public class EditActivity extends AppCompatActivity {
     private FloatingActionButton fab;
     private ImageView decrement;
     private ImageView delete;
+    private ImageView call;
     String[] suppliers = new String[]{"unknown", "Google", "Udacity", "Facebook", "Youtube"};
 
     @Override
@@ -48,6 +49,7 @@ public class EditActivity extends AppCompatActivity {
         increment = findViewById(R.id.editing_increase_quantity);
         decrement = findViewById(R.id.editing_decrease_quantity);
         delete = findViewById(R.id.editing_delete);
+        call = findViewById(R.id.editing_call);
         //get views
         price = findViewById(R.id.editing_price);
         product = findViewById(R.id.editing_product_name);
@@ -67,7 +69,10 @@ public class EditActivity extends AppCompatActivity {
                 onBackPressed();
             }
             product.setText(intent.getStringExtra("product_name"));
-            price.setText(intent.getStringExtra("price"));
+            String fullPrice = (intent.getStringExtra("price"));
+            //make price common number
+            String finalPrice = fullPrice.substring(0, (fullPrice.length() - 2));
+            price.setText(finalPrice);
             quantity.setText(intent.getStringExtra("quantity"));
             supplier = intent.getStringExtra("supplier");
             supplier_number.setText(intent.getStringExtra("supplier_number"));
@@ -116,7 +121,21 @@ public class EditActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 v.getContext().getContentResolver().delete(ProductContract.ProductEntry.CONTENT_URI, (ProductContract.ProductEntry._ID + "=?"), new String[]{String.valueOf(id)});
-                finish();
+                Intent intent = new Intent(v.getContext(), MainActivity.class);
+                startActivity(intent);
+            }
+        });
+        call.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    String uri = "tel:" + supplier_number.getText().toString().trim();
+                    Intent intent = new Intent(Intent.ACTION_DIAL);
+                    intent.setData(Uri.parse(uri));
+                    startActivity(intent);
+                } catch (Exception e) {
+                    Toast.makeText(v.getContext(), "Couldn't make a call.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         //set up the spinner
@@ -156,13 +175,13 @@ public class EditActivity extends AppCompatActivity {
 
     private void editAndInsert() {
         ContentValues values = new ContentValues();
-        values.put(ProductContract.ProductEntry.PRODUCT_NAME, product.getText().toString());
-        values.put(ProductContract.ProductEntry.PRICE, Integer.valueOf(price.getText().toString()));
-        values.put(ProductContract.ProductEntry.QUANTITY, Integer.valueOf(quantity.getText().toString()));
+        values.put(ProductContract.ProductEntry.PRODUCT_NAME, product.getText().toString().trim());
+        values.put(ProductContract.ProductEntry.PRICE, Integer.valueOf(price.getText().toString().trim()));
+        values.put(ProductContract.ProductEntry.QUANTITY, Integer.valueOf(quantity.getText().toString().trim()));
         values.put(ProductContract.ProductEntry.SUPPLIER_NAME, selected_supplier);
-        values.put(ProductContract.ProductEntry.SUPPLIER_PHONE, supplier_number.getText().toString());
+        values.put(ProductContract.ProductEntry.SUPPLIER_PHONE, supplier_number.getText().toString().trim());
         //insert
-        this.getContentResolver().update(ContentUris.withAppendedId(ProductContract.ProductEntry.CONTENT_URI, id), values, (ProductContract.ProductEntry._ID + "=?"), new String[]{String.valueOf(id)});
+        getApplicationContext().getContentResolver().update(ProductContract.ProductEntry.CONTENT_URI, values, (ProductContract.ProductEntry._ID + "=?"), new String[]{String.valueOf(id)});
         finish();
     }
 
