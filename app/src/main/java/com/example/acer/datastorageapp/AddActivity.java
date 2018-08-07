@@ -81,19 +81,26 @@ public class AddActivity extends AppCompatActivity {
     }
 
     private void checkAndInsert() {
-        try {
-            ContentValues values = new ContentValues();
-            values.put(ProductContract.ProductEntry.PRODUCT_NAME, product.getText().toString());
-            values.put(ProductContract.ProductEntry.PRICE, Integer.valueOf(price.getText().toString()));
-            values.put(ProductContract.ProductEntry.QUANTITY, Integer.valueOf(quantity.getText().toString()));
-            values.put(ProductContract.ProductEntry.SUPPLIER_NAME, selected_supplier);
-            values.put(ProductContract.ProductEntry.SUPPLIER_PHONE, supplier_number.getText().toString());
-            //insert
-            this.getContentResolver().insert(ProductContract.ProductEntry.CONTENT_URI, values);
-            finish();
-        } catch (Exception e) {
-            Toast.makeText(this, "Values are not valid or missing.", Toast.LENGTH_LONG).show();
-            Log.e("xyz", e.toString());
+        String supl_num_check = supplier_number.getText().toString().trim();
+        if (selected_supplier == 0) {
+            Toast.makeText(this, "Please, choose a supplier", Toast.LENGTH_SHORT).show();
+        } else if (supl_num_check.isEmpty() || supl_num_check.equals("")) {
+            Toast.makeText(this, "Please, insert supplier number", Toast.LENGTH_SHORT).show();
+        } else {
+            try {
+                ContentValues values = new ContentValues();
+                values.put(ProductContract.ProductEntry.PRODUCT_NAME, product.getText().toString().trim());
+                values.put(ProductContract.ProductEntry.PRICE, Integer.valueOf(price.getText().toString().trim()));
+                values.put(ProductContract.ProductEntry.QUANTITY, Integer.valueOf(quantity.getText().toString().trim()));
+                values.put(ProductContract.ProductEntry.SUPPLIER_NAME, selected_supplier);
+                values.put(ProductContract.ProductEntry.SUPPLIER_PHONE, supl_num_check);
+                //insert
+                this.getContentResolver().insert(ProductContract.ProductEntry.CONTENT_URI, values);
+                finish();
+            } catch (Exception e) {
+                Toast.makeText(this, "Values are not valid or missing.", Toast.LENGTH_LONG).show();
+                Log.e("xyz", e.toString());
+            }
         }
 
     }
