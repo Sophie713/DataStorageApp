@@ -65,7 +65,7 @@ public class EditActivity extends AppCompatActivity {
             //setup views
             id = intent.getIntExtra("id", -1);
             if (id == -1) {
-                Toast.makeText(this, "There has been some error.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.some_error, Toast.LENGTH_SHORT).show();
                 onBackPressed();
             }
             product.setText(intent.getStringExtra("product_name"));
@@ -110,7 +110,7 @@ public class EditActivity extends AppCompatActivity {
                         i--;
                         quantity.setText(String.valueOf(i));
                     } else {
-                        Toast.makeText(v.getContext(), "No more products to sell.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(v.getContext(), R.string.no_more_products, Toast.LENGTH_LONG).show();
                     }
                 } catch (Exception e) {
                     Toast.makeText(v.getContext(), getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
@@ -134,7 +134,7 @@ public class EditActivity extends AppCompatActivity {
                     intent.setData(Uri.parse(uri));
                     startActivity(intent);
                 } catch (Exception e) {
-                    Toast.makeText(v.getContext(), "Couldn't make a call.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(v.getContext(), R.string.couldnt_call, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -174,9 +174,9 @@ public class EditActivity extends AppCompatActivity {
     private void editAndInsert() {
         String supl_num_check = supplier_number.getText().toString().trim();
         if (selected_supplier == 0) {
-            Toast.makeText(this, "Please, choose a supplier", Toast.LENGTH_SHORT).show();
-        } else if (supl_num_check.isEmpty() || supl_num_check.equals("")) {
-            Toast.makeText(this, "Please, insert supplier number", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.choose_supplier, Toast.LENGTH_SHORT).show();
+        } else if (supl_num_check.equals("")) {
+            Toast.makeText(this, R.string.insert_supplier, Toast.LENGTH_SHORT).show();
         } else {
             try {
                 ContentValues values = new ContentValues();
@@ -189,7 +189,7 @@ public class EditActivity extends AppCompatActivity {
                 getApplicationContext().getContentResolver().update(ProductContract.ProductEntry.CONTENT_URI, values, (ProductContract.ProductEntry._ID + "=?"), new String[]{String.valueOf(id)});
                 finish();
             } catch (Exception e) {
-                Toast.makeText(this, "Values are not valid or missing.", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, R.string.values_not_valid, Toast.LENGTH_LONG).show();
                 Log.e("xyz", e.toString());
             }
         }

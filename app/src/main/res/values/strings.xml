@@ -9,4 +9,10 @@
     <string name="something_went_wrong">Something went wrong. Try updating manually.</string>
     <string name="delete_all_data">Delete all Data</string>
     <string name="sure_want_delete">Are you sure you want to delete all data?</string>
+    <string name="values_not_valid">Values are not valid or missing.</string>
+    <string name="insert_supplier">Please, insert supplier number</string>
+    <string name="choose_supplier">Please, choose a supplier</string>
+    <string name="couldnt_call">Couldn\'t make a call.</string>
+    <string name="no_more_products">No more products to sell.</string>
+    <string name="some_error">There has been some error.</string>
 </resources>
